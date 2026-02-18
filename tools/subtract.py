@@ -1,20 +1,18 @@
 """
-Тул для вычитания двух чисел.
+Provide subtraction as an MCP tool so arithmetic operations stay symmetric.
 """
 
 from mcp.server.fastmcp import FastMCP
 
 
 def register_subtract_tool(mcp: FastMCP) -> None:
-    """Регистрирует тул subtract на переданном экземпляре FastMCP."""
+    """Attach the `subtract` tool to the given FastMCP server for remote use."""
 
     @mcp.tool()
     def subtract(a: int, b: int) -> int:
         """
-        Вычесть второе число из первого и вернуть результат.
+        Subtract the second integer from the first and return the result.
 
-        Пример:
-            subtract(5, 3) -> 2
-            subtract(10, 7) -> 3
+        Mirrors the `add` tool to keep the arithmetic API consistent.
         """
         return a - b

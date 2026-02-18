@@ -1,16 +1,15 @@
 """
-Base MCP server for the 'mcp_tourists_agency' project.
+Minimal MCP server for the `mcp_tourists_agency` project.
 
-Сейчас сервер минимальный:
-- один тестовый тул `add(a, b)` для проверки, что MCP работает;
-- HTTP-транспорт (streamable-http) на http://localhost:8000/mcp.
+Provides:
+- a simple `add(a, b)` tool to verify MCP wiring;
+- HTTP transport (`streamable-http`) on http://localhost:8000/mcp.
 
-Как запускать (после установки зависимостей из requirements.txt):
+Run locally with:
 
     python server.py
 
-Потом вы сможете добавить новые модули/тулы (например, работу с DALL·E)
-внутрь пакета `tools`.
+Extend later by adding new tools and modules under the `tools` package.
 """
 
 from mcp.server.fastmcp import FastMCP
@@ -20,13 +19,10 @@ from tools import register_all_tools
 
 def create_server() -> FastMCP:
     """
-    Создаёт и настраивает экземпляр MCP-сервера.
+    Create and configure a FastMCP server instance.
 
-    Здесь удобно будет в будущем добавлять:
-    - регистрацию новых тулов;
-    - ресурсы;
-    - промпты;
-    - авторизацию и т.п.
+    Centralizes tool, resource, prompt, and auth registration so startup logic
+    stays in one place.
     """
     mcp = FastMCP(
         name="Tourists Agency MCP",
@@ -41,14 +37,10 @@ def create_server() -> FastMCP:
 
 def main() -> None:
     """
-    Точка входа в приложение.
+    Application entry point.
 
-    По умолчанию FastMCP с транспортом `streamable-http` поднимает HTTP‑сервер
-    на порту 8000 с endpoint'ом `/mcp`, т.е.:
-        http://localhost:8000/mcp
-
-    К этому адресу уже может подключаться любой MCP‑клиент (например,
-    MCP Inspector или IDE, поддерживающая MCP).
+    Runs FastMCP with the default `streamable-http` transport on port 8000 so
+    any MCP client can connect to the `/mcp` endpoint.
     """
     mcp = create_server()
     mcp.run(transport="streamable-http")

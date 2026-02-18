@@ -1,19 +1,18 @@
 """
-Тул для умножения двух чисел.
+Provide multiplication as its own MCP tool for reuse across future features.
 """
 
 from mcp.server.fastmcp import FastMCP
 
 
 def register_multiply_tool(mcp: FastMCP) -> None:
-    """Регистрирует тул multiply на переданном экземпляре FastMCP."""
+    """Attach the `multiply` tool to the given FastMCP server for remote calls."""
 
     @mcp.tool()
     def multiply(a: int, b: int) -> int:
         """
-        Умножить два числа и вернуть результат.
+        Multiply two integers and return the product.
 
-        Пример:
-            multiply(2, 3) -> 6
+        Keeps numeric operations together so clients can rely on one MCP server.
         """
         return a * b
