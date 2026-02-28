@@ -1,59 +1,61 @@
 # MCP Tourists Agency Server
 
-MCP (Model Context Protocol) сервер для турагентства на Python.
+MCP (Model Context Protocol) сервер для турагентства на Python. В перспективе — несколько сервисов (LLM, БД, оркестратор, Telegram-бот).
 
 ## Описание
 
-Этот проект представляет собой MCP‑сервер, который предоставляет инструменты (tools) для работы с туристическими данными и функциями. Сервер использует FastMCP и работает по протоколу HTTP (streamable-http).
+Проект содержит MCP‑сервер с инструментами (tools) для туристических данных. Используется FastMCP и транспорт HTTP (streamable-http). Структура заложена под дальнейшее добавление оркестратора, бота и других клиентов.
 
 ## Структура проекта
 
+См. **[docs/architecture.md](docs/architecture.md)** — описание контейнеров, папок и ответственности.
+
+Кратко:
+
 ```
 mcp_tourists_agency/
-├── server.py              # Главный файл сервера
-├── requirements.txt       # Зависимости проекта
-├── .cursor/
-│   └── mcp.json          # Конфигурация MCP для Cursor IDE
-└── tools/                 # Пакет с MCP‑тулзами
-    ├── __init__.py       # Централизованная регистрация всех тулов
-    ├── add.py            # Тул для сложения чисел
-    ├── multiply.py       # Тул для умножения чисел
-    ├── divide.py         # Тул для деления чисел
-    └── subtract.py       # Тул для вычитания чисел
+├── docker/                 # docker-compose и .env.example
+├── services/
+│   ├── llm/                # Контейнер LLM
+│   ├── db/                 # Контейнер БД
+│   └── bot/                # Telegram-бот
+├── mcp_server/             # MCP-сервер и тулзы
+│   ├── server.py
+│   ├── requirements.txt
+│   └── tools/
+├── shared/                 # Общие модели, константы, утилиты
+├── tests/                  # unit/ и integration/
+└── docs/
 ```
 
-## Установка
+## Установка и запуск MCP-сервера
 
-1. Установите зависимости:
+1. Установите зависимости и запустите сервер:
 
 ```bash
+cd mcp_server
 pip install -r requirements.txt
-```
-
-## Запуск сервера
-
-Запустите сервер командой:
-
-```bash
 python server.py
 ```
 
-Сервер запустится на `http://localhost:8000/mcp` (или `http://127.0.0.1:8000/mcp`).
+Сервер будет доступен на `http://localhost:8000/mcp`.
+
+2. Либо из корня репозитория (если `pip install` уже выполнен для `mcp_server`):
+
+```bash
+pip install -r mcp_server/requirements.txt
+cd mcp_server && python server.py
+```
 
 ## Остановка сервера
 
-Чтобы остановить сервер, нажмите в терминале:
-
-- **Windows/Linux:** `Ctrl + C`
-- **Mac:** `Cmd + C`
-
-Сервер корректно завершит работу и освободит порт 8000.
+В терминале: **Ctrl + C** (Windows/Linux) или **Cmd + C** (Mac).
 
 ## Подключение к серверу
 
 ### Через Cursor IDE
 
-Сервер автоматически подхватывается через файл `.cursor/mcp.json`. После запуска `python server.py` тулзы будут доступны в Cursor.
+Используется `.cursor/mcp.json` (URL `http://127.0.0.1:8000/mcp`). После запуска `python server.py` из папки `mcp_server` тулзы доступны в Cursor.
 
 ### Через MCP Inspector
 
@@ -61,11 +63,7 @@ python server.py
    ```bash
    npx -y @modelcontextprotocol/inspector
    ```
-
-2. В интерфейсе инспектора:
-   - Выберите транспорт: **HTTP**
-   - Введите URL: `http://127.0.0.1:8000/mcp`
-   - Нажмите **Connect**
+2. Транспорт: **HTTP**, URL: `http://127.0.0.1:8000/mcp` → **Connect**.
 
 ## Доступные тулзы
 
@@ -76,8 +74,6 @@ python server.py
 
 ## Разработка
 
-Для добавления новых тулов:
-
-1. Создайте новый файл в папке `tools/` (например, `tools/my_tool.py`)
-2. Реализуйте функцию регистрации тула (например, `register_my_tool(mcp: FastMCP)`)
-3. Добавьте импорт и вызов в `tools/__init__.py` в функцию `register_all_tools()`
+- **Новые тулзы:** создайте модуль в `mcp_server/tools/`, реализуйте `register_<name>_tool(mcp)`, добавьте импорт и вызов в `mcp_server/tools/__init__.py` в `register_all_tools()`.
+- **Общая логика:** модели и константы для нескольких сервисов — в `shared/`.
+- **Архитектура:** см. [docs/architecture.md](docs/architecture.md).

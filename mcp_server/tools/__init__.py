@@ -15,15 +15,12 @@ def register_all_tools(mcp: FastMCP) -> None:
     Imports registration helpers from individual modules so adding a new tool
     only requires an extra import and function call here.
     """
-
-    # Use local imports to avoid circular dependencies between modules.
     from .add import register_add_tool
-    from .multiply import register_multiply_tool
     from .divide import register_divide_tool
+    from .multiply import register_multiply_tool
     from .subtract import register_subtract_tool
 
-    # Register all tools on the shared MCP server instance.
     register_add_tool(mcp)
-    register_multiply_tool(mcp)
     register_divide_tool(mcp)
+    register_multiply_tool(mcp)
     register_subtract_tool(mcp)

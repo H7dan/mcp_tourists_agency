@@ -1,0 +1,3 @@
+# Shared helpers (formatting, validation) used by MCP, orchestrator, and bot.
+# Example:
+# def format_price(amount, currency): ...

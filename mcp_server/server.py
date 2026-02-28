@@ -5,9 +5,14 @@ Provides:
 - a simple `add(a, b)` tool to verify MCP wiring;
 - HTTP transport (`streamable-http`) on http://localhost:8000/mcp.
 
-Run locally with:
+Run from repo root:
 
-    python server.py
+    cd mcp_server && pip install -r requirements.txt && python server.py
+
+Or with PYTHONPATH from root:
+
+    pip install -r mcp_server/requirements.txt
+    PYTHONPATH=mcp_server python mcp_server/server.py
 
 Extend later by adding new tools and modules under the `tools` package.
 """
@@ -29,7 +34,6 @@ def create_server() -> FastMCP:
         json_response=True,
     )
 
-    # Регистрируем все тулзы проекта в одном месте.
     register_all_tools(mcp)
 
     return mcp
@@ -48,4 +52,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

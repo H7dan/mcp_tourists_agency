@@ -1,0 +1,15 @@
+# Placeholder: define services llm, db, orchestrator, bot when ready.
+# Example:
+# services:
+#   llm:
+#     image: ollama/ollama
+#     ...
+#   db:
+#     image: postgres:16
+#     ...
+#   orchestrator:
+#     build: ../services/orchestrator
+#     ...
+#   bot:
+#     build: ../services/bot
+#     ...
