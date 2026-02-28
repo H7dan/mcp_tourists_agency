@@ -1,11 +1,11 @@
 """
 Telegram bot entry point (aiogram 3).
 
-Run from this directory:
-    pip install -r requirements.txt
-    python main.py
+Run from repo root with PYTHONPATH so shared is importable:
+    PYTHONPATH=. python services/tg_bot/main.py
+Or from this directory: pip install -r requirements.txt && python main.py (PYTHONPATH=..).
 
-Loads BOT_TOKEN from .env. Handles /start (welcome) and any other message (in development notice).
+Loads BOT_TOKEN from .env. /start stays in bot; other text messages go to orchestrator (when wired).
 """
 
 import asyncio
@@ -37,11 +37,8 @@ async def main() -> None:
     )
     dp = Dispatcher()
 
-    WELCOME = (
-        "Hello! This is a <b>tourists agency</b> service bot.\n\n"
-        "Right now we are <i>in development</i> — more features will appear soon."
-    )
-    IN_DEVELOPMENT = "There is nothing here yet. Everything is in development."
+    from shared.messages import IN_DEVELOPMENT, MSG_ENTER_TEXT, WELCOME
+    from shared.utils import is_text_empty
 
     @dp.message(CommandStart())
     async def cmd_start(message: Message) -> None:
@@ -49,6 +46,9 @@ async def main() -> None:
 
     @dp.message()
     async def any_other(message: Message) -> None:
+        if is_text_empty(message.text):
+            await message.answer(MSG_ENTER_TEXT)
+            return
         await message.answer(IN_DEVELOPMENT)
 
     await dp.start_polling(bot)
