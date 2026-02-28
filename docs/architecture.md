@@ -24,13 +24,12 @@ mcp_tourists_agency/
 ├── services/
 │   ├── llm/                  # Container: LLM
 │   ├── db/                   # Container: DB + migrations
-│   └── tg_bot/               # Container: Telegram bot (calls orchestrator)
-│   # orchestrator/            # To add: orchestration API (LLM + MCP client)
-│
-├── mcp_server/               # MCP server + tools (run in orchestrator or separate)
-│   ├── server.py
-│   ├── requirements.txt
-│   └── tools/
+│   ├── tg_bot/               # Container: Telegram bot (calls orchestrator)
+│   ├── orchestrator/         # Container: orchestration API (LLM + MCP client)
+│   └── mcp_server/           # Container: MCP server + tools (separate or embedded)
+│       ├── server.py
+│       ├── requirements.txt
+│       └── tools/
 │
 ├── shared/                   # Shared code: DTOs, constants, utils (no service logic)
 │   ├── models/
@@ -59,5 +58,5 @@ mcp_tourists_agency/
 
 ## Running locally
 
-- **MCP server only:** from repo root, `cd mcp_server && pip install -r requirements.txt && python server.py` (or set `PYTHONPATH` and run from root).
+- **MCP server only:** from repo root, `cd services/mcp_server && pip install -r requirements.txt && python server.py` (or set `PYTHONPATH` and run from root).
 - **Full stack:** from repo root, `docker compose -f docker/docker-compose.yml up` (after configuring `.env` from `docker/.env.example`).

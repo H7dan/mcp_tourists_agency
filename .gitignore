@@ -5,3 +5,4 @@ __pycache__/
 .env
 docker/.env
 services/tg_bot/.env
+services/mcp_server/.env

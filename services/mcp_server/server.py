@@ -3,16 +3,16 @@ Minimal MCP server for the `mcp_tourists_agency` project.
 
 Provides:
 - a simple `add(a, b)` tool to verify MCP wiring;
-- HTTP transport (`streamable-http`) on http://localhost:8000/mcp.
+- HTTP transport (`streamable-http`) on port 8001 by default (set FASTMCP_PORT to override).
 
 Run from repo root:
 
-    cd mcp_server && pip install -r requirements.txt && python server.py
+    cd services/mcp_server && pip install -r requirements.txt && python server.py
 
 Or with PYTHONPATH from root:
 
-    pip install -r mcp_server/requirements.txt
-    PYTHONPATH=mcp_server python mcp_server/server.py
+    pip install -r services/mcp_server/requirements.txt
+    PYTHONPATH=services/mcp_server python services/mcp_server/server.py
 
 Extend later by adding new tools and modules under the `tools` package.
 """
@@ -43,8 +43,8 @@ def main() -> None:
     """
     Application entry point.
 
-    Runs FastMCP with the default `streamable-http` transport on port 8000 so
-    any MCP client can connect to the `/mcp` endpoint.
+    Runs FastMCP with streamable-http. Default port 8001 (FASTMCP_PORT) to avoid
+    conflict with orchestrator (8000). MCP client connects to http://host:port/mcp.
     """
     mcp = create_server()
     mcp.run(transport="streamable-http")

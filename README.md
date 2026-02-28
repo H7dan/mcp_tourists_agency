@@ -18,11 +18,12 @@ mcp_tourists_agency/
 ├── services/
 │   ├── llm/                # Контейнер LLM
 │   ├── db/                 # Контейнер БД
-│   └── tg_bot/                # Telegram-бот
-├── mcp_server/             # MCP-сервер и тулзы
-│   ├── server.py
-│   ├── requirements.txt
-│   └── tools/
+│   ├── tg_bot/             # Telegram-бот
+│   ├── orchestrator/       # Оркестратор (LLM + MCP)
+│   └── mcp_server/         # MCP-сервер и тулзы
+│       ├── server.py
+│       ├── requirements.txt
+│       └── tools/
 ├── shared/                 # Общие модели, константы, утилиты
 ├── tests/                  # unit/ и integration/
 └── docs/
@@ -33,18 +34,20 @@ mcp_tourists_agency/
 1. Установите зависимости и запустите сервер:
 
 ```bash
-cd mcp_server
+cd services/mcp_server
+# Скопируйте .env.example в .env (порт 8001, без конфликта с оркестратором на 8000)
+# Windows: copy .env.example .env   Linux/Mac: cp .env.example .env
 pip install -r requirements.txt
 python server.py
 ```
 
-Сервер будет доступен на `http://localhost:8000/mcp`.
+Сервер будет доступен на `http://localhost:8001/mcp`.
 
-2. Либо из корня репозитория (если `pip install` уже выполнен для `mcp_server`):
+2. Либо из корня репозитория (если `pip install` уже выполнен для `services/mcp_server`):
 
 ```bash
-pip install -r mcp_server/requirements.txt
-cd mcp_server && python server.py
+pip install -r services/mcp_server/requirements.txt
+cd services/mcp_server && python server.py
 ```
 
 ## Остановка сервера
@@ -55,7 +58,7 @@ cd mcp_server && python server.py
 
 ### Через Cursor IDE
 
-Используется `.cursor/mcp.json` (URL `http://127.0.0.1:8000/mcp`). После запуска `python server.py` из папки `mcp_server` тулзы доступны в Cursor.
+Используется `.cursor/mcp.json` (URL `http://127.0.0.1:8001/mcp`). После запуска `python server.py` из папки `services/mcp_server` тулзы доступны в Cursor.
 
 ### Через MCP Inspector
 
@@ -63,7 +66,7 @@ cd mcp_server && python server.py
    ```bash
    npx -y @modelcontextprotocol/inspector
    ```
-2. Транспорт: **HTTP**, URL: `http://127.0.0.1:8000/mcp` → **Connect**.
+2. Транспорт: **HTTP**, URL: `http://127.0.0.1:8001/mcp` → **Connect**.
 
 ## Доступные тулзы
 
@@ -74,6 +77,6 @@ cd mcp_server && python server.py
 
 ## Разработка
 
-- **Новые тулзы:** создайте модуль в `mcp_server/tools/`, реализуйте `register_<name>_tool(mcp)`, добавьте импорт и вызов в `mcp_server/tools/__init__.py` в `register_all_tools()`.
+- **Новые тулзы:** создайте модуль в `services/mcp_server/tools/`, реализуйте `register_<name>_tool(mcp)`, добавьте импорт и вызов в `services/mcp_server/tools/__init__.py` в `register_all_tools()`.
 - **Общая логика:** модели и константы для нескольких сервисов — в `shared/`.
 - **Архитектура:** см. [docs/architecture.md](docs/architecture.md).
