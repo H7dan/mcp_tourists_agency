@@ -9,7 +9,7 @@ Summary of the repository layout and how services relate.
 | **llm**         | LLM service (e.g. Ollama). |
 | **db**          | Database (PostgreSQL or other). |
 | **orchestrator**| Single entry point for all clients: receives requests, calls LLM + MCP, returns responses. No Telegram-specific logic. |
-| **bot**         | Telegram adapter only: receives messages → calls orchestrator (HTTP) → sends reply. |
+| **tg_bot**      | Telegram adapter only: receives messages → calls orchestrator (HTTP) → sends reply. |
 
 Flow: **User → Bot → Orchestrator → LLM + MCP (+ DB)**. Other clients (Web, API) can call the orchestrator the same way.
 
@@ -24,7 +24,7 @@ mcp_tourists_agency/
 ├── services/
 │   ├── llm/                  # Container: LLM
 │   ├── db/                   # Container: DB + migrations
-│   └── bot/                  # Container: Telegram bot (calls orchestrator)
+│   └── tg_bot/               # Container: Telegram bot (calls orchestrator)
 │   # orchestrator/            # To add: orchestration API (LLM + MCP client)
 │
 ├── mcp_server/               # MCP server + tools (run in orchestrator or separate)
@@ -51,7 +51,7 @@ mcp_tourists_agency/
 ## Responsibilities
 
 - **services/llm**, **services/db** — infrastructure only.
-- **services/bot** — Telegram handlers; calls orchestrator over HTTP; may use `shared` for DTOs/constants.
+- **services/tg_bot** — Telegram handlers; calls orchestrator over HTTP; may use `shared` for DTOs/constants.
 - **orchestrator** (to add) — orchestration logic and API; depends on `shared`, optionally on `mcp_server` if embedded.
 - **mcp_server** — MCP tools; can use `shared` for request/response shapes.
 - **shared** — single source of truth for types, constants, and small helpers used by several services.

@@ -18,7 +18,7 @@ mcp_tourists_agency/
 ├── services/
 │   ├── llm/                # Контейнер LLM
 │   ├── db/                 # Контейнер БД
-│   └── bot/                # Telegram-бот
+│   └── tg_bot/                # Telegram-бот
 ├── mcp_server/             # MCP-сервер и тулзы
 │   ├── server.py
 │   ├── requirements.txt

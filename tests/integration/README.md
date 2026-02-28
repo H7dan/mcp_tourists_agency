@@ -1,1 +1,1 @@
-# Integration tests: MCP server, orchestrator API, bot ↔ orchestrator.
+# Integration tests: MCP server, orchestrator API, tg_bot ↔ orchestrator.

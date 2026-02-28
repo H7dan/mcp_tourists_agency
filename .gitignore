@@ -1,5 +1,7 @@
 .cursor/
 __pycache__/
 *.pyc
+.venv/
 .env
 docker/.env
+services/tg_bot/.env
