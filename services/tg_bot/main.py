@@ -37,7 +37,7 @@ async def main() -> None:
     import httpx
 
     from shared.constants import ORCHESTRATOR_CHAT_ENDPOINT
-    from shared.messages import IN_DEVELOPMENT, MSG_ENTER_TEXT, MSG_TECHNICAL_WORK, WELCOME
+    from shared.messages import MSG_IN_DEVELOPMENT, MSG_ENTER_TEXT, MSG_TECHNICAL_WORK, MSG_WELCOME
     from shared.models import OrchestratorRequest, OrchestratorResponse
     from shared.utils import is_text_empty
 
@@ -49,7 +49,7 @@ async def main() -> None:
 
     @dp.message(CommandStart())
     async def cmd_start(message: Message) -> None:
-        await message.answer(WELCOME)
+        await message.answer(MSG_WELCOME)
 
     @dp.message()
     async def any_other(message: Message) -> None:
@@ -58,7 +58,7 @@ async def main() -> None:
             return
 
         if not ORCHESTRATOR_URL:
-            await message.answer(IN_DEVELOPMENT)
+            await message.answer(MSG_IN_DEVELOPMENT)
             return
 
         user_id = message.from_user.id if message.from_user else 0

@@ -1,12 +1,13 @@
-"""Chat endpoint: receive message, return response."""
+"""Chat endpoint for Telegram bot: receive message, return response."""
 
 import logging
 
 from fastapi import APIRouter, Request, status
 from fastapi.responses import JSONResponse
 
-from shared.constants import ERROR_TEXT_REQUIRED
+from shared.constants import ERR_TEXT_REQUIRED
 from shared.models import OrchestratorRequest, OrchestratorResponse, get_request_validation_error
+from .llm_chat import run_llm_chat
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -41,9 +42,10 @@ async def chat(request: Request) -> JSONResponse:
         logger.exception("Failed to parse request: %s", e)
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
-            content={"error": ERROR_TEXT_REQUIRED},
+            content={"error": ERR_TEXT_REQUIRED},
         )
 
-    # Placeholder: return stub response. LLM + MCP integration later.
-    resp = OrchestratorResponse.success("Got your message. LLM integration coming soon.")
+    # Hand off to LLM orchestration layer (currently a stub).
+    resp = await run_llm_chat(req)
     return JSONResponse(status_code=status.HTTP_200_OK, content=resp.to_dict())
+

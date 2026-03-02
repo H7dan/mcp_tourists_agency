@@ -10,8 +10,14 @@ import sys
 
 from fastapi import FastAPI
 
-from config import HOST, PORT
-from api.chat import router as chat_router
+try:
+    # When imported as a package: services.orchestrator.main
+    from .config import HOST, PORT
+    from .api.tg_bot_chat import router as chat_router
+except ImportError:  # pragma: no cover - fallback for direct script execution
+    # When run as a script from services/orchestrator: python main.py
+    from config import HOST, PORT
+    from api.tg_bot_chat import router as chat_router
 
 logging.basicConfig(
     level=logging.INFO,

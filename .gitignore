@@ -6,3 +6,4 @@ __pycache__/
 docker/.env
 services/tg_bot/.env
 services/mcp_server/.env
+вопросы_
