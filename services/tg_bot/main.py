@@ -41,11 +41,15 @@ async def main() -> None:
     from shared.models import OrchestratorRequest, OrchestratorResponse
     from shared.utils import is_text_empty
 
+    from services.tg_bot.startup import log_startup
+
     bot = Bot(
         token=TOKEN,
         default=DefaultBotProperties(parse_mode=ParseMode.HTML),
     )
     dp = Dispatcher()
+
+    dp.startup.register(log_startup)
 
     @dp.message(CommandStart())
     async def cmd_start(message: Message) -> None:
@@ -96,7 +100,6 @@ async def main() -> None:
             await message.answer(MSG_TECHNICAL_WORK)
 
     await dp.start_polling(bot)
-
 
 if __name__ == "__main__":
     asyncio.run(main())

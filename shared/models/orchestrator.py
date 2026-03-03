@@ -7,7 +7,7 @@ Response: orchestrator returns text (or error for failure).
 
 from dataclasses import dataclass
 
-from shared.constants import ERR_TEXT_REQUIRED
+from shared.constants import ERR_CHAT_ID_REQUIRED, ERR_TEXT_REQUIRED, ERR_USER_ID_REQUIRED
 from shared.utils import is_text_empty
 
 
@@ -16,6 +16,10 @@ def get_request_validation_error(data: dict) -> str | None:
     Check request body for /v1/chat. Returns error code if invalid, None if ok.
     Orchestrator should return 400 with {"error": code} when this is not None.
     """
+    if "user_id" not in data:
+        return ERR_USER_ID_REQUIRED
+    if "chat_id" not in data:
+        return ERR_CHAT_ID_REQUIRED
     if is_text_empty(data.get("text")):
         return ERR_TEXT_REQUIRED
     return None

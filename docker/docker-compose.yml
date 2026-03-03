@@ -1,15 +1,39 @@
-# Placeholder: define services llm, db, orchestrator, bot when ready.
-# Example:
-# services:
-#   llm:
-#     image: ollama/ollama
-#     ...
-#   db:
-#     image: postgres:16
-#     ...
-#   orchestrator:
-#     build: ../services/orchestrator
-#     ...
-#   bot:
-#     build: ../services/bot
-#     ...
+version: "3.9"
+
+services:
+  # Reserved: LLM service (e.g. Ollama) on host port 8004 (container port TBD).
+  # llm:
+  #   image: ollama/ollama
+  #   ports:
+  #     - "8004:8004"
+  #   ...
+
+  # Reserved: database on host port 8002, mapped to container 5432.
+  # db:
+  #   image: postgres:16
+  #   ports:
+  #     - "8002:5432"
+  #   ...
+
+  # Orchestrator: main HTTP API for bot and clients (host 8000 → container 8000).
+  # orchestrator:
+  #   build: ../services/orchestrator
+  #   ports:
+  #     - "8000:8000"
+  #   ...
+
+  # Telegram bot: reserve host port 8003 for future HTTP/webhook/health UI.
+  # Even if the bot currently uses only long polling, this port stays
+  # dedicated to the tg_bot container.
+  # tg_bot:
+  #   build: ../services/tg_bot
+  #   ports:
+  #     - "8003:8003"
+  #   ...
+
+  # MCP server: HTTP MCP on host 8001 → container 8001.
+  # mcp_server:
+  #   build: ../services/mcp_server
+  #   ports:
+  #     - "8001:8001"
+  #   ...
